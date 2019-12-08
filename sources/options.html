@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Domain Whitelist</title>
+</head>
+<body>
+<h2>Whitelist setting</h2>
+<form id="settings">
+    <p>
+        <label>Enable<input type="checkbox" id="enable"></label>
+    </p>
+    <p>
+        <label for="whitelist">Whitelist</label>
+        <br/>
+        <textarea id="whitelist" form="settings" rows="10" cols="50"
+                  placeholder="Put the whitelist rules here, one regexp by line..."></textarea>
+    </p>
+    <button type="submit">Save</button>
+</form>
+<script src="options.js"></script>
+</body>
+</html>
+
+

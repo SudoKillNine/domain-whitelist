@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+  "name": "Domain Whitelist",
+  "version": "1.8",
+  "description": "Prevents the browser from loading websites from non-whitelisted domains.",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>",
+    "storage"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "web_accessible_resources": [
+    "blocked.html",
+    "notready.html"
+  ],
+  "options_ui": {
+    "page": "options.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "whitelist@sk9",
+      "update_url": "https://raw.githubusercontent.com/sudokillnine/domain-whitelist/master/releases/updates.json"
+    }
+  }
+}
