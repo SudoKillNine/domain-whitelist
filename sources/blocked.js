@@ -8,7 +8,11 @@ window.addEventListener("load", function (event) {
 
     document.getElementById("domain").textContent = domain;
 
-    if (params.get("reason") == "0") {
+    document.getElementById("options").addEventListener("click", function (){
+        browser.runtime.openOptionsPage();
+    });
+
+    if (params.get("reason") === "0") {
         document.getElementById("notReady").remove();
     } else {
         document.getElementById("blocked").remove();

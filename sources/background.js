@@ -13,54 +13,69 @@
         }
     }
 
-    function blockRequest(request, reason) {
+    function blockRequestSilently() {
+        return {
+            cancel: true,
+        }
+    }
+
+    function blockRequestWithInfoTab(request, reason) {
         browser.tabs.create({
                 active: true,
                 url: browser.runtime.getURL("blocked.html") + "?url=" + encodeURIComponent(getUrl(request)) + "&reason=" + reason,
             }
         );
 
-        return {
-            cancel: true,
-        }
+        return blockRequestSilently();
     }
 
     function extensionNotReadyListener(request) {
-        return blockRequest(request, 1);
+        return blockRequestWithInfoTab(request, 1);
     }
 
-    function checkUrl(request, whiteList) {
-        let whiteListPatterns = whiteList.split("\n")
-            .map(i => i.replace("*", "[\\w\\.-]*"))
-            .map(i => new RegExp("^" + i + "$"));
+    function checkUrl(request, whiteList, blackList) {
+        function listToPatters(list) {
+            return list.split("\n")
+                .map(i => i.replace("*", "[\\w\\.-]*"))
+                .map(i => new RegExp("^" + i + "$"));
+        }
 
         function getDomain(url) {
             let domain = (new URL(url));
             return domain.hostname;
         }
 
-        function isDomainWhitelisted(domain) {
+        function isDomainInLists(domain, list) {
             let result = false;
-            whiteListPatterns.forEach((pattern) => {
-                console.log(domain)
-                console.log(pattern.source)
+            list.forEach((pattern) => {
                 if (pattern.test(domain)) result = true;
             });
-            return result
+            return result;
         }
 
-        if (!isDomainWhitelisted(getDomain(getUrl(request)))) {
-            return blockRequest(request, 0);
+        let whiteListPatterns = listToPatters(whiteList);
+        let blackListPatterns = listToPatters(blackList);
+        let domain = getDomain(getUrl(request));
+
+        if (isDomainInLists(domain, blackListPatterns)) {
+            console.log(domain + " in blacklist.")
+            return blockRequestSilently();
+        }
+
+        if (!isDomainInLists(domain, whiteListPatterns)) {
+            console.log(domain + " not in whitelist.")
+            return blockRequestWithInfoTab(request, 0);
         }
     }
 
     function startWithOptions(options) {
         let enable = options.enable || false;
         let whiteList = options.whiteList || "";
+        let blackList = options.blackList || "";
 
 
         function onNewUrlListener(request) {
-            return checkUrl(request, whiteList);
+            return checkUrl(request, whiteList, blackList);
         }
 
         if (enable) {
@@ -95,7 +110,7 @@
         browser.webRequest.onBeforeRequest.addListener(extensionNotReadyListener, {urls: ["<all_urls>"]}, ["blocking"]);
 
         // load all the options and call the main
-        browser.storage.sync.get(["enable", "whiteList"]).then((options) => {
+        browser.storage.sync.get(["enable", "whiteList", "blackList"]).then((options) => {
             setButtonIcon(options.enable)
             startWithOptions(options);
             browser.webRequest.onBeforeRequest.removeListener(extensionNotReadyListener);

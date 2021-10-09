@@ -6,11 +6,19 @@
 </head>
 <body>
 <div padding="10%">
-    <h2>Whitelist setting</h2>
+    <h1>Setting</h1>
     <form id="settings">
+        <label for="whiteList"><h2>White list</h2></label><br>
+        <label for="whiteList">Put in the white list all the domains you want to access. The access to domains which are not in the list will be refused with a denied popup. Note that the black list applies before the white list.</label><br>
         <p>
             <textarea id="whiteList" form="settings" rows="10" cols="50%"
                       placeholder="Put the white listed domain here, one by line. May be prefixed with a star to include subdomains."></textarea>
+        </p>
+        <label for="blackList"><h2>Black list</h2></label><br>
+        <label for="blackList">Put in the black list all domains you don't want to have a popup on rejection. Domains here will be silently denied.</label><br>
+        <p>
+            <textarea id="blackList" form="settings" rows="10" cols="50%"
+                      placeholder="Put the black listed domain here, one by line. May be prefixed with a star to include subdomains."></textarea>
         </p>
         <button type="submit">Save</button>
     </form>
