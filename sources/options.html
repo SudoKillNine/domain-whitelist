@@ -5,19 +5,16 @@
     <title>Domain Whitelist</title>
 </head>
 <body>
-<h2>Whitelist setting</h2>
-<form id="settings">
-    <p>
-        <label>Enable<input type="checkbox" id="enable"></label>
-    </p>
-    <p>
-        <label for="whitelist">Whitelist</label>
-        <br/>
-        <textarea id="whitelist" form="settings" rows="10" cols="50"
-                  placeholder="Put the whitelist rules here, one regexp by line..."></textarea>
-    </p>
-    <button type="submit">Save</button>
-</form>
+<div padding="10%">
+    <h2>Whitelist setting</h2>
+    <form id="settings">
+        <p>
+            <textarea id="whiteList" form="settings" rows="10" cols="50%"
+                      placeholder="Put the white listed domain here, one by line. May be prefixed with a star to include subdomains."></textarea>
+        </p>
+        <button type="submit">Save</button>
+    </form>
+</div>
 <script src="options.js"></script>
 </body>
 </html>

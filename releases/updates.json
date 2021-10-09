@@ -5,6 +5,10 @@
         {
           "version": "1.8",
           "update_link": "https://github.com/sudokillnine/domain-whitelist/blob/master/releases/domain_whitelist-1.8-fx.xpi?raw=true"
+        },
+        {
+          "version": "1.9",
+          "update_link": "https://github.com/sudokillnine/domain-whitelist/blob/master/releases/domain_whitelist-1.9-fx.xpi?raw=true"
         }
       ]
     }

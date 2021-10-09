@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Domain Whitelist",
-  "version": "1.8",
+  "version": "1.9",
   "description": "Prevents the browser from loading websites from non-whitelisted domains.",
   "permissions": [
     "webRequest",
@@ -9,22 +9,26 @@
     "<all_urls>",
     "storage"
   ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "whitelist@sk9",
+      "update_url": "https://raw.githubusercontent.com/sudokillnine/domain-whitelist/master/releases/updates.json"
+    }
+  },
   "background": {
     "scripts": [
       "background.js"
     ]
   },
   "web_accessible_resources": [
-    "blocked.html",
-    "notready.html"
+    "blocked.html"
   ],
   "options_ui": {
     "page": "options.html"
   },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "whitelist@sk9",
-      "update_url": "https://raw.githubusercontent.com/sudokillnine/domain-whitelist/master/releases/updates.json"
+  "browser_action": {
+    "default_icon": {
+      "32": "icons/unlock-32.png"
     }
   }
 }

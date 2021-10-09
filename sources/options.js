@@ -1,33 +1,40 @@
 function saveOptions(e) {
     e.preventDefault();
-    whitelist_str = document.querySelector("#whitelist").value;
-    try {
-        whitelist_str.split("\n").map(i => new RegExp(i));
 
-        browser.storage.sync.set({
-            enable: document.querySelector("#enable").checked,
-            whitelist: document.querySelector("#whitelist").value
+    function checkDomainsInput(whiteList) {
+        let validator = new RegExp("^\\*?[\\w\\.-]+$")
+        let result = true;
+        whiteList.forEach((domain) => {
+            console.log(domain)
+            if (domain && !validator.test(domain)) result = false;
         });
-        document.getElementById("whitelist").style.color = "#000000";
-        browser.runtime.reload()
-    } catch (e) {
-        document.getElementById("whitelist").style.color = "#ff0000";
+        return result;
+    }
+
+    let whiteList = document.querySelector("#whiteList").value
+        .replaceAll("\r\n", "\n")
+        .replaceAll("\r", "\n")
+        .split("\n")
+        .filter(e => e);
+
+    if (checkDomainsInput(whiteList)) {
+        browser.storage.sync.set({
+            whiteList: whiteList.join("\n")
+        });
+        document.getElementById("whiteList").style.color = "#000000";
+        browser.runtime.reload();
+    } else {
+        document.getElementById("whiteList").style.color = "#ff0000";
     }
 }
 
 function restoreOptions() {
 
     function setCurrentChoice(result) {
-        document.querySelector("#enable").checked = result.enable || false;
-        document.querySelector("#whitelist").value = result.whitelist || "";
+        document.querySelector("#whiteList").value = result.whiteList || "";
     }
 
-    function onError(error) {
-        console.log(`Error: ${error}`);
-    }
-
-    var getting = browser.storage.sync.get(["enable", "whitelist"]);
-    getting.then(setCurrentChoice, onError);
+    browser.storage.sync.get(["whiteList"]).then(setCurrentChoice, (error) => console.log(`Error: ${error}`));
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
